@@ -1,0 +1,78 @@
+[
+	{
+		"name": "ELEMENT",
+		"ui_name": "Streaks",
+		"type": "STREAKS",
+		"flare": "LF",
+		"scale_x": 8.0,
+		"scale_y": 0.4000000059604645,
+		"light_falloff": 4.099999904632568,
+		"streaks_count": 6,
+		"intensity": 0.550000011920929,
+		"hide": 0
+	},
+	{
+		"name": "ELEMENT2",
+		"ui_name": "Ghosts",
+		"type": "GHOSTS",
+		"flare": "LF",
+		"scale_x": 0.550000011920929,
+		"scale_y": 0.550000011920929,
+		"position": 1.25,
+		"intensity": 0.09999999403953552,
+		"random_scale": 0.6769102811813355,
+		"random_scale_seed": 0,
+		"ghosts_count": 3,
+		"image": [
+			"Poly_circle_smt0.png"
+		],
+		"hide": 0,
+		"ghosts_distance": 0.14000000059604646,
+		"ghosts_random_x": 0.0,
+		"random_rot": 0.0,
+		"ghosts_random_distance": 0.41999998688697817,
+		"ghosts_random_loc_seed": 33
+	},
+	{
+		"name": "ELEMENT3",
+		"ui_name": "Shimmer",
+		"type": "SHIMMER",
+		"flare": "LF",
+		"interpolation2": 3,
+		"shimmer_complexity": 48,
+		"hide": 0,
+		"interpolation": 0,
+		"shimmer_width": 1.0,
+		"shimmer_length": 0.27142858505249026,
+		"circular_completion": 0.0,
+		"completion_feather": 0.03809523954987526,
+		"color": [
+			0.04434686899185181,
+			0.3012385070323944,
+			1.0,
+			1.0
+		],
+		"use_global_color": 0.5116279125213623,
+		"intensity": 1.2699999809265137
+	},
+	{
+		"name": "ELEMENT4",
+		"ui_name": "Ring",
+		"type": "RING",
+		"flare": "LF",
+		"scale_x": 0.30000001192092898,
+		"scale_y": 0.30000001192092898,
+		"ring_ray_count": 0,
+		"ring_ray_length": 0.3700000047683716,
+		"ring_random_length": 0.0,
+		"ring_ray_width": 1.0,
+		"use_spectrum": 1.0,
+		"spectrum_offset": 1.0,
+		"spectrum_interpolation": 0,
+		"circular_completion": 0.0,
+		"completion_feather": 0.0,
+		"distortion": 0.0,
+		"noise_scale": 1.0,
+		"intensity": 0.040000006556510928
+	}
+]

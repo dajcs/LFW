@@ -1,15 +1,11 @@
-import bpy
-from bpy import data as D
-from bpy import context as C
 
 import os
 import sys
+import json
 import argparse
 
-
 # print(sys.argv)
-# ['blender.exe', '--background', '--python', 'lfw_setup.py', '--', '--input', 'image.jpg']
-# parameters before '--' are interpreted by blender, after '--' our python script can use them
+# ['blender.exe', '--background', '--python', '.\\Documents\\SSP\\LF\\ap.py', '--', 'valaki', 'valahol']
 
 # Find the index of '--' token
 try:
@@ -39,32 +35,39 @@ parser.add_argument(
 
 args = parser.parse_args(my_args)
 # args, unknown = parser.parse_known_args()
-args = vars(args) # from class properties -> dictionary
+args = vars(args)
+print('args =', args, '\n')
+# print('type(args):', type(args),'\n') # dict
+# print('unknown =', unknown, '\n')
 
-
-
-# add current directory to sys.path
 if '.' not in sys.path:
     sys.path.append('.')
 
-import myscript
-print('myscript.x =', myscript.x, '\n')
+import utils
+print('utils.x =', utils.x, '\n')
+
 print('cwd: ', os.getcwd())
+
+import bpy
+from bpy import data as D
+from bpy import context as C
 
 
 # camera z coordinate
 z_cam = +13.88888931274414  
 # background image name with full path
-# filepath = r'c:\Users\dajcs\Documents\SSP\images\ltv-climbinghill-viper.png'
 # filepath = r'c:\Users\dajcs\Documents\SSP\LF\images34\img030077.jpg'
 filepath = args['image']
+if filepath and os.path.exists(filepath):
+    filepath = os.path.abspath(filepath)
+else:
+    filepath = None 
 
 # load flares wizard
 bpy.ops.flares_wizard.load_props()
 
 # Access the current scene
 scene = bpy.context.scene
-
 
 # Ensure we are in object mode
 bpy.ops.object.mode_set(mode='OBJECT')
@@ -77,7 +80,7 @@ if "Cube" in bpy.data.objects:
     bpy.data.objects['Cube'].select_set(True)
     bpy.ops.object.delete()
 
-# Move 'Camera' to (0,0,10), looking down
+# Move 'Camera' to (0,0,z_cam), looking down
 ############################################
 if "Camera" in bpy.data.objects:
     camera = bpy.data.objects['Camera']
@@ -91,10 +94,13 @@ print(f'filepath = {filepath}')
 bpy.ops.flares_wizard.add_background()
 
 # add background image
-bpy.ops.flares_wizard.open_image(type="BG", filepath=filepath)
+if filepath:
+    bpy.ops.flares_wizard.open_image(type="BG", filepath=filepath)
+    # match scene resolution to image resolution
+    bpy.ops.flares_wizard.set_scene_resolution()
+else:
+    bpy.ops.flares_wizard.open_image(type="BG")
 
-# match scene resotlution to image resolution
-bpy.ops.flares_wizard.set_scene_resolution()
 
 
 
@@ -147,7 +153,7 @@ bpy.ops.flares_wizard.add_element(type="SHIMMER")
 # streaks_count = 8
 bpy.context.scene.fw_group.coll[0].ele_index=0
 bpy.context.scene.fw_group.coll[0].elements[0].streaks_count = 3
-
+#bpy.context.scene.fw_group.coll[0]['elements'][0].streaks_count
 # ghosts_count = 8
 bpy.context.scene.fw_group.coll[0].ele_index=1
 bpy.context.scene.fw_group.coll[0].elements[1].ghosts_count = 2
@@ -173,4 +179,10 @@ bpy.context.scene.render.filepath = r"render_output.jpg" # Set output path
 
 # Render the scene, save image
 # bpy.ops.render.render(write_still = True)
+
+print('Press "N", slect "Lens Flares" in the side menu')
+print('Please adjust the Lens Flare effects for your project needs\n')
+print('When finished adjustments, save settings by entering the command below into Blender Python console:')
+print('import param2json\n')
+# __import__('code').interact(local=dict(globals(), **locals()))
 

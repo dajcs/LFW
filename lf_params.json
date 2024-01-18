@@ -1,0 +1,36 @@
+[
+    {
+        "name": "ELEMENT",
+        "ui_name": "Streaks",
+        "type": "STREAKS",
+        "flare": "LF",
+        "scale_x": 8.0,
+        "scale_y": 0.4000000059604645,
+        "light_falloff": 2.0,
+        "streaks_count": 3
+    },
+    {
+        "name": "ELEMENT2",
+        "ui_name": "Ghosts",
+        "type": "GHOSTS",
+        "flare": "LF",
+        "scale_x": 0.15000000596046448,
+        "scale_y": 0.15000000596046448,
+        "position": 1.25,
+        "intensity": 0.10000000149011612,
+        "random_scale": 0.5,
+        "random_scale_seed": 6,
+        "ghosts_count": 2,
+        "image": [
+            "Poly_hexagon_smt1.png"
+        ]
+    },
+    {
+        "name": "ELEMENT3",
+        "ui_name": "Shimmer",
+        "type": "SHIMMER",
+        "flare": "LF",
+        "interpolation2": 2,
+        "shimmer_complexity": 5
+    }
+]
