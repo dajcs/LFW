@@ -171,17 +171,17 @@ for i, ele in enumerate(elements):
 # # bpy.data.scenes['Scene'].fw_group.coll[0].elements[2]
 
 
-# streaks_count = 8
-bpy.context.scene.fw_group.coll[0].ele_index=0
-bpy.context.scene.fw_group.coll[0].elements[0].streaks_count = 3
-#bpy.context.scene.fw_group.coll[0]['elements'][0].streaks_count
-# ghosts_count = 8
-bpy.context.scene.fw_group.coll[0].ele_index=1
-bpy.context.scene.fw_group.coll[0].elements[1].ghosts_count = 2
+# # streaks_count = 8
+# bpy.context.scene.fw_group.coll[0].ele_index=0
+# bpy.context.scene.fw_group.coll[0].elements[0].streaks_count = 3
+# #bpy.context.scene.fw_group.coll[0]['elements'][0].streaks_count
+# # ghosts_count = 8
+# bpy.context.scene.fw_group.coll[0].ele_index=1
+# bpy.context.scene.fw_group.coll[0].elements[1].ghosts_count = 2
 
-# shimmer_complexity = 8
-bpy.context.scene.fw_group.coll[0].ele_index=2
-bpy.context.scene.fw_group.coll[0].elements[2].shimmer_complexity = 5
+# # shimmer_complexity = 8
+# bpy.context.scene.fw_group.coll[0].ele_index=2
+# bpy.context.scene.fw_group.coll[0].elements[2].shimmer_complexity = 5
 
 
 
