@@ -152,7 +152,7 @@ with open(args['params']) as f:
 bpy.ops.flares_wizard.add_lens_flare()
 
 for i, ele in enumerate(elements):
-    #bpy.ops.flares_wizard.add_element(type=ele['type'])  # element type: STREAKS, GHOSTS, SHIMMER,...    
+    bpy.ops.flares_wizard.add_element(type=ele['type'])  # element type: STREAKS, GHOSTS, SHIMMER,...    
     bpy.context.scene.fw_group.coll[0].ele_index= i
     for prop in ele.keys():
         if prop in ['name', 'ui_name', 'type', 'flare']:
