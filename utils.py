@@ -13,6 +13,7 @@ import argparse
 def get_args(argv):
 
     # Find the index of '--' token
+    # parameters before '--' are for Blender
     try:
         idx = argv.index("--")
         my_args = argv[idx + 1:]  # Arguments after the first '--'
@@ -20,10 +21,9 @@ def get_args(argv):
         my_args = []
 
     parser = argparse.ArgumentParser()
-
     # parser.add_argument(
     #     '-b', '--background',
-    #     default=False,
+    #     default=True,
     #     action='store_true',
     #     help='background (headless) blender execution'
     # )
@@ -31,6 +31,7 @@ def get_args(argv):
     #     '-P', '--python', 
     #     help='path to python script executed by blender',
     # )
+    # '--'
     parser.add_argument(
         '-bi', '--bg_image',
         default = '',
@@ -38,13 +39,50 @@ def get_args(argv):
     )
     parser.add_argument(
         '-lp', '--lf_params',
-        default = 'lf_params.json',
+        default = '',
         help='path to json file storing lens flares settings'
     )
 
     args = parser.parse_args(my_args)
     # args, unknown = parser.parse_known_args()
-    args = vars(args)
-    # print('type(args):', type(args),'\n') # dict
+    args = vars(args)  # -> type dict
     # print('unknown =', unknown, '\n')
     return args
+
+
+import bpy
+from bpy import data as D
+from bpy import context as C
+
+def load_lf_params(lf_params_fname):
+    if not lf_params_fname:
+        lf_params_fname = 'lf_params.json'
+
+    # texture_path in Windows, on Linux 'Users' -> 'home' (probably), I don't know would be on Mac
+    texture_path = os.path.join( [p for p in sys.path if 'Users' in p and p.endswith('addons')][0], 
+                                                                            'FlaresWizard', 'Textures')
+
+    with open(lf_params_fname) as f:
+        elements =json.load(f)               # list of lf elements
+
+    for i, ele in enumerate(elements):
+        bpy.ops.flares_wizard.add_element(type=ele['type'])  # element type: STREAKS, GHOSTS, SHIMMER,...    
+        bpy.context.scene.fw_group.coll[0].ele_index= i
+        print(f'\ni = {i}')
+        print(f'ele = {list(ele.items())[:4]}\n')
+        for prop in ele.keys():
+            if prop in ['name', 'ui_name', 'type', 'flare']:
+                continue
+            elif prop == 'image':
+                if not ele['image'][0] in bpy.data.images:
+                    filepath = os.path.join(texture_path, ele['image'][0])
+                    bpy.ops.flares_wizard.open_image(type="ELEMENT", filepath=filepath)
+                print(f'bpy.context.scene.fw_group.coll[0].elements[{i}].{prop} = bpy.data.images{ele[prop]}')
+                exec(f'bpy.context.scene.fw_group.coll[0].elements[{i}].{prop} = bpy.data.images{ele[prop]}')
+            else:
+                print(f'bpy.context.scene.fw_group.coll[0].elements[{i}].{prop} = {ele[prop]}')
+                try:
+                    exec(f'bpy.context.scene.fw_group.coll[0].elements[{i}].{prop} = {ele[prop]}')
+                except TypeError:
+                    exec(f'bpy.context.scene.fw_group.coll[0].elements[{i}].{prop} = "{ele[prop]}"')
+

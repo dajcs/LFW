@@ -67,12 +67,12 @@ bpy.ops.flares_wizard.set_scene_resolution()
 ######################################################################
 if "FW_BG_Plane" in bpy.data.objects:
     bg_plane = bpy.data.objects['FW_BG_Plane']
-    z_bg = bg_plane.location.z
+    z_bg = bg_plane.location.z   # -13.889  (but visually it appears at z=0)
     bg_dim = D.objects['FW_BG_Plane'].dimensions  # Vector((10.001999855041504, 7.501999855041504, 0.0))
 
 if "Light" in bpy.data.objects:
     light = bpy.data.objects['Light']
-    light.location = (1, 1, z_bg + z_cam)
+    light.location = (2, 2, z_bg + z_cam)           # (2, 2, 0)
     light.rotation_euler = (0, 0, 0) # in radians
 
 
@@ -98,25 +98,30 @@ obj.select_set(True)
 bpy.context.view_layer.objects.active = obj
 
 
-
+# Add Blank Lens Flare
 # bpy.ops.flares_wizard.presets_browser()
 bpy.ops.flares_wizard.add_lens_flare()
 
-bpy.ops.flares_wizard.add_element(type="STREAKS")
-# bpy.data.scenes['Scene'].fw_group.coll[0].elements[0]
-bpy.context.scene.fw_group.coll[0].ele_index=0
-bpy.context.scene.fw_group.coll[0].elements[0].streaks_count = 3
-
-bpy.ops.flares_wizard.add_element(type="GHOSTS")
-# bpy.data.scenes['Scene'].fw_group.coll[0].elements[1]
-bpy.context.scene.fw_group.coll[0].ele_index=1
-bpy.context.scene.fw_group.coll[0].elements[1].ghosts_count = 2
-
-bpy.ops.flares_wizard.add_element(type="SHIMMER")
-# bpy.data.scenes['Scene'].fw_group.coll[0].elements[2]
-bpy.context.scene.fw_group.coll[0].ele_index=2
-bpy.context.scene.fw_group.coll[0].elements[2].shimmer_complexity = 5
-
+if args['lf_params']:
+    # load lf_params if specified
+    utils.load_lf_params(args['lf_params'])
+else:
+    # or setup a basic STREAKS element
+    bpy.ops.flares_wizard.add_element(type="STREAKS")
+    # bpy.data.scenes['Scene'].fw_group.coll[0].elements[0]
+    bpy.context.scene.fw_group.coll[0].ele_index=0
+    bpy.context.scene.fw_group.coll[0].elements[0].streaks_count = 3
+    
+    # bpy.ops.flares_wizard.add_element(type="GHOSTS")
+    # # bpy.data.scenes['Scene'].fw_group.coll[0].elements[1]
+    # bpy.context.scene.fw_group.coll[0].ele_index=1
+    # bpy.context.scene.fw_group.coll[0].elements[1].ghosts_count = 2
+    
+    # bpy.ops.flares_wizard.add_element(type="SHIMMER")
+    # # bpy.data.scenes['Scene'].fw_group.coll[0].elements[2]
+    # bpy.context.scene.fw_group.coll[0].ele_index=2
+    # bpy.context.scene.fw_group.coll[0].elements[2].shimmer_complexity = 5
+    
 
 
 
@@ -136,10 +141,12 @@ bpy.context.scene.render.filepath = r"render_output.jpg" # Set output path
 # Render the scene, save image
 # bpy.ops.render.render(write_still = True)
 
-print('\nPress "N", slect "Lens Flares" in the side menu')
-print('Please adjust the Lens Flare effects for your project needs\n')
-print('When finished adjustments, select Scripting workspace (top menu right')
-print('Save settings by entering the command below into Blender Python console (left middle window)')
-print('import param2json\n')
+print('''\n\n\n
+Press "N", slect "Lens Flares" in the side menu
+Please adjust the Lens Flare effects for your project needs
 
+When finished adjustments, select Scripting workspace (top menu right')
+Save settings by entering the command below into Blender Python console (left middle window)')
 
+import param2json
+''')

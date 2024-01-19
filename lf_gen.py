@@ -144,12 +144,12 @@ obj.select_set(True)
 bpy.context.view_layer.objects.active = obj
 
 
-with open(args['params']) as f:
-    elements =json.load(f)               # list of lf elements
-
 # Add Blank Lens Flare
 # bpy.ops.flares_wizard.presets_browser()
 bpy.ops.flares_wizard.add_lens_flare()
+
+with open(args['lf_params']) as f:
+    elements =json.load(f)               # list of lf elements
 
 for i, ele in enumerate(elements):
     bpy.ops.flares_wizard.add_element(type=ele['type'])  # element type: STREAKS, GHOSTS, SHIMMER,...    
