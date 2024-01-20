@@ -103,8 +103,10 @@ bpy.context.view_layer.objects.active = obj
 bpy.ops.flares_wizard.add_lens_flare()
 
 if args['lf_params']:
-    # load lf_params if specified
-    utils.load_lf_params(args['lf_params'])
+    # load and apply lf_params if specified
+    with open(args['lf_params']) as f:
+        elements =json.load(f)               # list of lf elements
+    utils.apply(elements)
 else:
     # or setup a basic STREAKS element
     bpy.ops.flares_wizard.add_element(type="STREAKS")
@@ -145,8 +147,10 @@ print('''\n\n\n
 Press "N", slect "Lens Flares" in the side menu
 Please adjust the Lens Flare effects for your project needs
 
-When finished adjustments, select Scripting workspace (top menu right')
-Save settings by entering the command below into Blender Python console (left middle window)')
+When finished adjustments, select Scripting workspace (top menu right)
+Save settings by entering the commands below into Blender's Python console (left middle window)
 
-import param2json
+from utils import save
+save('filename.json')
+
 ''')

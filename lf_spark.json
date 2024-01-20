@@ -1,0 +1,101 @@
+[
+    {
+        "name": "ELEMENT",
+        "ui_name": "Streaks",
+        "type": "STREAKS",
+        "flare": "LF",
+        "scale_x": 8.0,
+        "scale_y": 0.4000000059604645,
+        "light_falloff": 2.0,
+        "streaks_count": 6,
+        "intensity": 0.25,
+        "random_rot": 0.0,
+        "random_scale": 0.0,
+        "random_scale_seed": 0,
+        "hide": 0
+    },
+    {
+        "name": "ELEMENT2",
+        "ui_name": "Ghosts",
+        "type": "GHOSTS",
+        "flare": "LF",
+        "scale_x": 0.6599998474121094,
+        "scale_y": 0.6599999070167542,
+        "position": 1.8199999332427979,
+        "intensity": 0.03999999910593033,
+        "random_scale": 0.0,
+        "random_scale_seed": 0,
+        "ghosts_count": 1,
+        "image": [
+            "Poly_circle_smt1.png"
+        ],
+        "ghosts_distance": -0.3399999737739563,
+        "ghosts_random_distance": -0.21000003814697266,
+        "hide": 0
+    },
+    {
+        "name": "ELEMENT3",
+        "ui_name": "Shimmer",
+        "type": "SHIMMER",
+        "flare": "LF",
+        "interpolation2": 2,
+        "shimmer_complexity": 52,
+        "intensity": 0.3400000333786011,
+        "shimmer_width": 1.0,
+        "hide": 0
+    },
+    {
+        "name": "ELEMENT4",
+        "ui_name": "Ring",
+        "type": "RING",
+        "flare": "LF",
+        "scale_x": 0.3400000035762787,
+        "scale_y": 0.3400000035762787,
+        "ring_ray_count": 0,
+        "ring_ray_length": 0.5199999809265137,
+        "ring_ray_width": 1.0,
+        "ring_random_width": 0.5,
+        "use_spectrum": 1.0,
+        "spectrum_offset": 1.0,
+        "circular_completion": 0.0,
+        "intensity": 0.019999999552965164,
+        "hide": 0
+    },
+    {
+        "name": "ELEMENT5",
+        "ui_name": "Ghosts",
+        "type": "GHOSTS",
+        "flare": "LF",
+        "scale_x": 0.12000000476837158,
+        "scale_y": 0.12000000476837158,
+        "position": 1.25,
+        "intensity": 0.07000000029802322,
+        "random_scale": 0.5,
+        "random_scale_seed": 6,
+        "ghosts_count": 2,
+        "image": [
+            "Poly_circle_smt0.png"
+        ],
+        "hide": 0,
+        "ghosts_distance": 0.6200000047683716,
+        "rotation": 0.0
+    },
+    {
+        "name": "ELEMENT6",
+        "ui_name": "Ghosts",
+        "type": "GHOSTS",
+        "flare": "LF",
+        "scale_x": 0.42000001668930054,
+        "scale_y": 0.42000001668930054,
+        "position": 1.25,
+        "intensity": 0.10000000149011612,
+        "random_scale": 0.5,
+        "random_scale_seed": 6,
+        "ghosts_count": 1,
+        "image": [
+            "Poly_circle_smt2.png"
+        ],
+        "ghosts_distance": 0.22999998927116394,
+        "ghosts_random_distance": 0.6899999380111694
+    }
+]

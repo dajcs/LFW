@@ -51,19 +51,13 @@ def get_args(argv):
 
 
 import bpy
-from bpy import data as D
-from bpy import context as C
 
-def load_lf_params(lf_params_fname):
-    if not lf_params_fname:
-        lf_params_fname = 'lf_params.json'
+def apply(elements):
+    '''
+    elements : list of LF elements
+    applies the settings to element properties
+    '''
 
-    # texture_path in Windows, on Linux 'Users' -> 'home' (probably), I don't know would be on Mac
-    texture_path = os.path.join( [p for p in sys.path if 'Users' in p and p.endswith('addons')][0], 
-                                                                            'FlaresWizard', 'Textures')
-
-    with open(lf_params_fname) as f:
-        elements =json.load(f)               # list of lf elements
 
     for i, ele in enumerate(elements):
         bpy.ops.flares_wizard.add_element(type=ele['type'])  # element type: STREAKS, GHOSTS, SHIMMER,...    
@@ -75,6 +69,10 @@ def load_lf_params(lf_params_fname):
                 continue
             elif prop == 'image':
                 if not ele['image'][0] in bpy.data.images:
+                    # texture_path in Windows, on Linux 'Users' -> 'home' (probably)
+                    texture_path = os.path.join( 
+                        [p for p in sys.path if 'Users' in p and p.endswith('addons')][0], 
+                                                                                'FlaresWizard', 'Textures')
                     filepath = os.path.join(texture_path, ele['image'][0])
                     bpy.ops.flares_wizard.open_image(type="ELEMENT", filepath=filepath)
                 print(f'bpy.context.scene.fw_group.coll[0].elements[{i}].{prop} = bpy.data.images{ele[prop]}')
@@ -84,5 +82,22 @@ def load_lf_params(lf_params_fname):
                 try:
                     exec(f'bpy.context.scene.fw_group.coll[0].elements[{i}].{prop} = {ele[prop]}')
                 except TypeError:
+                    print(f'bpy.context.scene.fw_group.coll[0].elements[{i}].{prop} = "{ele[prop]}"')
                     exec(f'bpy.context.scene.fw_group.coll[0].elements[{i}].{prop} = "{ele[prop]}"')
+
+
+def save(fname='lf_params.json'):
+    '''
+    fname : string, optional, default: 'lf_params.json'
+    saves current LF elements to specified/default json file
+    '''
+    x = str([ x.to_dict() for x in bpy.context.scene.fw_group.coll[0]['elements']]).replace('bpy.data.images','')
+    # js = json.dumps(eval(x), indent=4)
+    
+    try:
+        with open(fname, 'w') as f:
+            json.dump(eval(x), f, indent=4)
+        print(f'Lens Flare parameters saved to file "{fname}"\n')
+    except Exception as e:
+        print(f"An error occurred:\n\n{e}\n\nTry again...")
 
