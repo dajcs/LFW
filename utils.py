@@ -11,6 +11,10 @@ import json
 import argparse
 
 def get_args(argv):
+    '''
+    argv : sys.argv
+    returns: args : dict
+    '''
 
     # Find the index of '--' token
     # parameters before '--' are for Blender
@@ -21,26 +25,67 @@ def get_args(argv):
         my_args = []
 
     parser = argparse.ArgumentParser()
-    # parser.add_argument(
-    #     '-b', '--background',
-    #     default=True,
-    #     action='store_true',
-    #     help='background (headless) blender execution'
-    # )
-    # parser.add_argument(
-    #     '-P', '--python', 
-    #     help='path to python script executed by blender',
-    # )
-    # '--'
+    parser = argparse.ArgumentParser(
+        description=('lf_setup.py and lf_gen.py is used to generate Lens Flare effects.' + 
+        '  The parameters before "--" are interpreted by Blender\'s python; parameters after "--" are used by lf_*.py scripts.'),
+        usage='blender [-b] --python lf_[setup|gen].py -- [options]',
+        epilog=('Example: "blender --python lf_setup.py" is used to prepare the json file containing the lens flare effects.  ' + 
+                'Example: "blender -b --python lf_gen.py -sd images/ -od outimages" is used to mass produce the images with LF effects.')
+    )
+    # listing --background and --python arguments only to be displayed in the help message
+    parser.add_argument(
+        '-b', '--background',
+        default=False,
+        action='store_true',
+        help='background (headless) blender execution (parameter handled by Blender)'
+    )
+    parser.add_argument(
+        '-P', '--python', 
+        help=('path to python script executed by blender (parameter handled by Blender)\n' +
+             'Use "--" to separate Blender and LFW script parameters.\n' +
+             'After "--" all the parameters will be parsed by the LFW scripts\n')
+    )
+
+    # '--'   Delimiter between Blender and LFW script parameters
+
     parser.add_argument(
         '-bi', '--bg_image',
         default = '',
         help='path to image used as a background for lens flares setup'
     )
     parser.add_argument(
-        '-lp', '--lf_params',
+        '-lf', '--lf_params',
         default = '',
         help='path to json file storing lens flares settings'
+    )
+    parser.add_argument(
+        '-sd', '--sdir',
+        default = '',
+        help='path to source directory of original images'
+    )
+    parser.add_argument(
+        '-od', '--odir',
+        default = '',
+        help='path to output directory for images with LF'
+    )
+    parser.add_argument(
+        '-rx', '--res_x',
+        default = '1920',
+        type = int,
+        help='resolution X (width, default 1920), of the output images (considered when sdir not specified)'
+    )
+    parser.add_argument(
+        '-ry', '--res_y',
+        default = '1080',
+        type = int,
+        help='resolution Y (height, default 1080) of the output images (considered when sdir not specified)'
+    )
+    parser.add_argument(
+        '-ii', '--inside_image',
+        default=False,
+        action='store_true',
+        help=('when specified the LF effect originates inside the image. Default False, meaning LF origin' + 
+              ' can move 10 percent beyond image boundaries (there will be visible effects on the image)')
     )
 
     args = parser.parse_args(my_args)
@@ -50,14 +95,26 @@ def get_args(argv):
     return args
 
 
-import bpy
+try:
+    import bpy
+# if we're not running in Blender's Python environment print help and exit
+except ModuleNotFoundError:
+    print('''
+    Usage:
+        blender --python lf_setup.py -- [options]
+        blender --python lf_gen.py -- [options]
+    More help:
+        blender --python lf_setup.py -- --help
+        blender --python lf_gen.py -- --help
+''')
+    sys.exit()
+
 
 def apply(elements):
     '''
     elements : list of LF elements
     applies the settings to element properties
     '''
-
 
     for i, ele in enumerate(elements):
         bpy.ops.flares_wizard.add_element(type=ele['type'])  # element type: STREAKS, GHOSTS, SHIMMER,...    

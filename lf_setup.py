@@ -11,11 +11,10 @@ import utils
 
 args = utils.get_args(sys.argv)
 
+
 import bpy
 from bpy import data as D
 from bpy import context as C
-
-
 
 
 
