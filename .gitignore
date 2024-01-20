@@ -1,2 +1,3 @@
 *.blend
 __pycache__/
+output/

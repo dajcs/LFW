@@ -66,26 +66,26 @@ def get_args(argv):
     parser.add_argument(
         '-od', '--odir',
         default = '',
-        help='path to output directory for images with LF'
+        help='path to output directory for images with LF, it will be created if it doesn\'t exist'
     )
     parser.add_argument(
         '-rx', '--res_x',
         default = '1920',
         type = int,
-        help='resolution X (width, default 1920), of the output images (considered when sdir not specified)'
+        help='resolution X (width, default 1920), of the output images (considered when neither bg_image or sdir is specified)'
     )
     parser.add_argument(
         '-ry', '--res_y',
         default = '1080',
         type = int,
-        help='resolution Y (height, default 1080) of the output images (considered when sdir not specified)'
+        help='resolution Y (height, default 1080) of the output images (considered when neither bg_image or sdir is specified)'
     )
     parser.add_argument(
-        '-ii', '--inside_image',
-        default=False,
-        action='store_true',
-        help=('when specified the LF effect originates inside the image. Default False, meaning LF origin' + 
-              ' can move 10 percent beyond image boundaries (there will be visible effects on the image)')
+        '-oi', '--outside_image',
+        default=True,
+        type = bool,
+        help=('the LF effect origin can or can\'t be outside the image. Default True, meaning LF origin' + 
+              ' can move 20 percent beyond image boundaries (while there will be visible effects on the image)')
     )
 
     args = parser.parse_args(my_args)

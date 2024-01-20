@@ -4,15 +4,25 @@
         "ui_name": "Streaks",
         "type": "STREAKS",
         "flare": "LF",
-        "scale_x": 8.0,
-        "scale_y": 0.4000000059604645,
+        "scale_x": 12.589999198913574,
+        "scale_y": 0.7899999618530273,
         "light_falloff": 2.0,
-        "streaks_count": 6,
+        "streaks_count": 3,
         "intensity": 0.25,
         "random_rot": 0.0,
-        "random_scale": 0.0,
+        "random_scale": 0.18095238506793976,
         "random_scale_seed": 0,
-        "hide": 0
+        "hide": 0,
+        "color": [
+            0.096317358314991,
+            1.0,
+            0.11682695895433426,
+            1.0
+        ],
+        "use_global_color": 0.8857142925262451,
+        "rotation": 0.3618067800998688,
+        "lock_x": 1.0,
+        "lock_y": 1.0
     },
     {
         "name": "ELEMENT2",
@@ -39,9 +49,12 @@
         "type": "SHIMMER",
         "flare": "LF",
         "interpolation2": 2,
-        "shimmer_complexity": 52,
-        "intensity": 0.3400000333786011,
-        "shimmer_width": 1.0
+        "shimmer_complexity": 62,
+        "intensity": 0.3100000321865082,
+        "shimmer_width": 1.0,
+        "hide": 0,
+        "rotation": -0.016231562942266464,
+        "shimmer_length": 0.5285714268684387
     },
     {
         "name": "ELEMENT4",
