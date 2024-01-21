@@ -13,8 +13,8 @@ args = utils.get_args(sys.argv)
 
 
 import bpy
-from bpy import data as D
-from bpy import context as C
+# from bpy import data as D
+# from bpy import context as C
 
 
 def prepare_scene():
@@ -22,7 +22,7 @@ def prepare_scene():
     bpy.ops.flares_wizard.load_props()
 
     # Access the current scene
-    scene = bpy.context.scene
+    # scene = bpy.context.scene
 
     # Ensure we are in object mode
     bpy.ops.object.mode_set(mode='OBJECT')
@@ -48,7 +48,7 @@ def prepare_scene():
     # Add background image
     ######################
     # background image fname with full path or "Black_BG.png"
-    bg_filepath = args['bg_image']
+    bg_filepath = args['ref_image']
     if bg_filepath and os.path.exists(bg_filepath):
         bg_filepath = os.path.abspath(bg_filepath)
     else:
@@ -108,45 +108,18 @@ def prepare_scene():
     # bpy.ops.flares_wizard.presets_browser()
     bpy.ops.flares_wizard.add_lens_flare()
 
+    # Set output format
+    bpy.context.scene.render.image_settings.file_format = 'JPEG'
+
     return bg_plane
 
 
 def main():
     prepare_scene()
 
-    if args['lf_params']:
-        # load and apply lf_params if specified
-        with open(args['lf_params']) as f:
-            elements =json.load(f)               # list of lf elements
+    with open(args['lf_params']) as f:
+        elements =json.load(f)               # list of lf elements
         utils.apply(elements)
-    else:
-        # or setup a basic STREAKS element
-        bpy.ops.flares_wizard.add_element(type="STREAKS")
-        # bpy.data.scenes['Scene'].fw_group.coll[0].elements[0]
-        bpy.context.scene.fw_group.coll[0].ele_index=0
-        bpy.context.scene.fw_group.coll[0].elements[0].streaks_count = 3
-        
-        # bpy.ops.flares_wizard.add_element(type="GHOSTS")
-        # # bpy.data.scenes['Scene'].fw_group.coll[0].elements[1]
-        # bpy.context.scene.fw_group.coll[0].ele_index=1
-        # bpy.context.scene.fw_group.coll[0].elements[1].ghosts_count = 2
-        
-        # bpy.ops.flares_wizard.add_element(type="SHIMMER")
-        # # bpy.data.scenes['Scene'].fw_group.coll[0].elements[2]
-        # bpy.context.scene.fw_group.coll[0].ele_index=2
-        # bpy.context.scene.fw_group.coll[0].elements[2].shimmer_complexity = 5
-        
-
-
-
-
-
-    # Optional: Set output format and file path
-    bpy.context.scene.render.image_settings.file_format = 'JPEG'  # Set output format
-    bpy.context.scene.render.filepath = r"render_output.jpg" # Set output path
-
-    # Render the scene, save image
-    # bpy.ops.render.render(write_still = True)
 
     print('''\n\n\n
     Press "N", slect "Lens Flares" in the side menu

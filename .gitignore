@@ -1,3 +1,8 @@
 *.blend
 __pycache__/
 output/
+lf_*.json
+!lf_basic.json
+!lf_params.json
+!lf_spark.json
+!lf_lunalab.json

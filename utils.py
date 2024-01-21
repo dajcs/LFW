@@ -29,7 +29,7 @@ def get_args(argv):
     parser = argparse.ArgumentParser(
         description=('lf_setup.py and lf_gen.py is used to generate Lens Flare effects.' + 
         '  The parameters before "--" are interpreted by Blender\'s python; parameters after "--" are used by lf_*.py scripts.'),
-        usage='blender [-b] --python lf_[setup|gen].py -- [options]',
+        usage='blender [-b] --python lf_[setup|gen].py -- [LFW options]',
         epilog=('Example: "blender --python lf_setup.py" is used to prepare the json file containing the lens flare effects.  ' + 
                 'Example: "blender -b --python lf_gen.py -sd images/ -od outimages" is used to mass produce the images with LF effects.')
     )
@@ -50,22 +50,22 @@ def get_args(argv):
     # '--'   Delimiter between Blender and LFW script parameters
 
     parser.add_argument(
-        '-bi', '--bg_image',
+        '-ri', '--ref_image',
         default = '',
-        help='path to image used as a background for lens flares setup'
+        help='path to image used as a background for lens flares setup or getting resolution by lf_gen'
     )
     parser.add_argument(
         '-lf', '--lf_params',
-        default = '',
+        default = 'lf_basic.json',
         help='path to json file storing lens flares settings'
     )
     parser.add_argument(
-        '-sd', '--sdir',
+        '-s', '--source',
         default = '',
         help='path to source directory of original images'
     )
     parser.add_argument(
-        '-od', '--odir',
+        '-o', '--output',
         default = '',
         help='path to output directory for images with LF, it will be created if it doesn\'t exist'
     )
@@ -73,13 +73,13 @@ def get_args(argv):
         '-rx', '--res_x',
         default = '1920',
         type = int,
-        help='resolution X (width, default 1920), of the output images (considered when neither bg_image or sdir is specified)'
+        help='resolution X (width, default 1920), of the output images, considered when no ref_image and source is a number (generating LF on black background)'
     )
     parser.add_argument(
         '-ry', '--res_y',
         default = '1080',
         type = int,
-        help='resolution Y (height, default 1080) of the output images (considered when neither bg_image or sdir is specified)'
+        help='resolution Y (height, default 1080) of the output images, considered when no ref_image and source is a number (generating LF on black background)'
     )
     parser.add_argument(
         '-oi', '--outside_image',

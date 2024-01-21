@@ -1,0 +1,37 @@
+[
+    {
+        "name": "ELEMENT",
+        "ui_name": "Streaks",
+        "type": "STREAKS",
+        "flare": "LF",
+        "scale_x": 8.0,
+        "scale_y": 0.4000000059604645,
+        "light_falloff": 2.630000114440918,
+        "streaks_count": 4,
+        "color": [
+            0.06963802129030228,
+            1.0,
+            0.1308511197566986,
+            1.0
+        ],
+        "use_global_color": 0.7333333492279053,
+        "intensity": 0.7000000476837158
+    },
+    {
+        "name": "ELEMENT2",
+        "ui_name": "Ghosts",
+        "type": "GHOSTS",
+        "flare": "LF",
+        "scale_x": 0.15000000596046448,
+        "scale_y": 0.15000000596046448,
+        "position": 1.25,
+        "intensity": 0.10000000149011612,
+        "random_scale": 0.5,
+        "random_scale_seed": 6,
+        "ghosts_count": 3,
+        "image": [
+            "Poly_hexagon_smt1.png"
+        ],
+        "ghosts_distance": 0.4699999690055847
+    }
+]

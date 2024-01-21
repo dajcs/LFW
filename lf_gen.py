@@ -33,20 +33,34 @@ else:
     blender --python lf_gen.py -- --help\n''')
     sys.exit()
 
-if args['odir']:
-    if not os.path.exists(args['odir']):
-        os.makedirs(args['odir'])
+if args['output']:
+    if not os.path.exists(args['output']):  # create output directory if it doesn't exist
+        os.makedirs(args['output'])
 else:
     print('''
-    lf_gen.py needs --odir (output directory) to be specified
+    lf_gen.py needs --output to be specified
+    more help:
+    blender --python lf_gen.py -- --help\n''')
+    sys.exit()
+
+if args['source']:
+    imgs = glob.glob(os.path.join(args['source'], '*'))    # all files in source directory
+    imgs = [im for im in imgs if os.path.splitext(im)[1] in ['.png', '.jpg', '.jpeg', '.bmp']]  # keep only image files
+    if not imgs:
+        try:
+            nr_img = int(args['source'])
+        except ValueError:
+            print(f"\nThe specified --source {args['source']} has no images and it can't convert to integer\n")
+            sys.exit()
+else:
+    print('''
+    lf_gen.py needs --source to be specified
     more help:
     blender --python lf_gen.py -- --help\n''')
     sys.exit()
 
 
-if args['sdir']:
-    imgs = glob.glob(os.path.join(args['sdir'], '*'))    # all files in sdir
-    imgs = [im for im in imgs if os.path.splitext(im)[1] in ['.png', '.jpg', '.jpeg', '.bmp']]  # keep only image files
+if imgs:
 
     for im in imgs:
         # set im as bg_image
@@ -59,11 +73,12 @@ if args['sdir']:
         utils.rand_lf_origin(args['outside_image'])
 
         # Set output format and file path
-        bpy.context.scene.render.image_settings.file_format = 'JPEG'  # Set output format
+        # bpy.context.scene.render.image_settings.file_format = 'JPEG'  # Set output format
         # create output filename
         base_name_with_ext = os.path.basename(bg_im)  # -> e.g. img003077.jpg
         base_name = os.path.splitext(base_name_with_ext)[0] # ---> img003077
-        output_fname = os.path.join(os.path.abspath(args['odir']), base_name + '_lf.jpg')
-        bpy.context.scene.render.filepath = output_fname # Set output path
+        output_fname = os.path.join(os.path.abspath(args['output']), base_name + '_lf.jpg')
+        # Set output path
+        bpy.context.scene.render.filepath = output_fname 
         # Render the scene, save image
         bpy.ops.render.render(write_still = True)
