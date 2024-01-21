@@ -55,14 +55,8 @@ if args['sdir']:
         bpy.ops.flares_wizard.open_image(type="BG", filepath=bg_im)
         # match scene resolution to image resolution
         bpy.ops.flares_wizard.set_scene_resolution()
-        # get bg_plane dimensions
-        bg_width, bg_height, _ = bpy.data.objects['FW_BG_Plane'].dimensions
-        lf_origin = np.array([bg_width, bg_height]) * (1 + 0.2 * args['outside_image'])  # +20% if outside image allowed
-        lf_origin_middle = lf_origin / 2
-        lf_origin *= np.random.rand(2)   # randomize
-        lf_orig_x, lf_orig_y = lf_origin - lf_origin_middle    # shift to middle (centered in (0,0))
-        # set light x, y coords
-        bpy.data.objects['Light'].location = (lf_orig_x, lf_orig_y, 0)
+        # randomize lf origin
+        utils.rand_lf_origin(args['outside_image'])
 
         # Set output format and file path
         bpy.context.scene.render.image_settings.file_format = 'JPEG'  # Set output format

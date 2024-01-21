@@ -9,6 +9,7 @@ import os
 import sys
 import json
 import argparse
+import numpy as np
 
 def get_args(argv):
     '''
@@ -158,3 +159,19 @@ def save(fname='lf_params.json'):
     except Exception as e:
         print(f"An error occurred:\n\n{e}\n\nTry again...")
 
+
+def rand_lf_origin(orig_outside_image):
+    '''
+    orig_outside_image : bool, 
+    places 'Light' - therefore LF origin randomly on bg_plane
+    '''
+    # get bg_plane dimensions
+    bg_width, bg_height, _ = bpy.data.objects['FW_BG_Plane'].dimensions
+    lf_origin = np.array([bg_width, bg_height]) * (1 + 0.2 * orig_outside_image)  # +20% if outside image allowed
+    lf_origin_middle = lf_origin / 2
+    lf_origin *= np.random.rand(2)   # randomize
+    lf_orig_x, lf_orig_y = lf_origin - lf_origin_middle    # shift to middle (centered in (0,0))
+    # set light x, y coords
+    bpy.data.objects['Light'].location = (lf_orig_x, lf_orig_y, 0)
+    
+    
