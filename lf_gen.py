@@ -3,7 +3,6 @@ import os
 import sys
 import json
 import glob
-import numpy as np
 
 
 if '.' not in sys.path:
@@ -16,8 +15,6 @@ args = utils.get_args(sys.argv)
 
 
 import bpy
-from bpy import data as D
-from bpy import context as C
 
 bg_plane = prepare_scene()
 

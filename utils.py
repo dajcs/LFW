@@ -10,6 +10,7 @@ import sys
 import json
 import argparse
 import numpy as np
+from argparse import RawDescriptionHelpFormatter
 
 def get_args(argv):
     '''
@@ -27,11 +28,23 @@ def get_args(argv):
 
     parser = argparse.ArgumentParser()
     parser = argparse.ArgumentParser(
-        description=('lf_setup.py and lf_gen.py is used to generate Lens Flare effects.' + 
-        '  The parameters before "--" are interpreted by Blender\'s python; parameters after "--" are used by lf_*.py scripts.'),
-        usage='blender [-b] --python lf_[setup|gen].py -- [LFW options]',
-        epilog=('Example: "blender --python lf_setup.py" is used to prepare the json file containing the lens flare effects.  ' + 
-                'Example: "blender -b --python lf_gen.py -sd images/ -od outimages" is used to mass produce the images with LF effects.')
+        description='''
+LFW scripts: lf_setup.py and lf_gen.py is used to generate Lens Flare effects using Blender with Lens Flare Wizard add-on.
+It is recommended to add Blender program location to the path and start Blender via cmd line from a terminal window, as shown.
+The parameters before token "--" are interpreted by Blender\'s python; parameters after token "--" are used by the LFW scripts.
+This help message can be displayed by command:
+blender --python lf_setup.py -- --help''',
+        usage='\nblender [-b] --python lf_[setup|gen].py -- [LFW options]',
+        epilog='''
+Example: 
+blender --python lf_setup.py -- --ref_image LTV.png
+can be used to prepare the json file containing the lens flare effects.
+This starts with displaying the ref_image LTV.png, on top of it a basic LF effect.  
+Add and/or adjust LF elements and save LF to a json file - as described in the terminal window.
+Example:
+blender --python lf_gen.py -- --lf_params my_lf_params.json --source images --output outimages
+is used to add LF effects specified in my_lf_params.json to images in "images" directory and save them to "outimages" directory.''',
+        formatter_class=RawDescriptionHelpFormatter
     )
     # listing --background and --python arguments only to be displayed in the help message
     parser.add_argument(
@@ -62,7 +75,7 @@ def get_args(argv):
     parser.add_argument(
         '-s', '--source',
         default = '',
-        help='path to source directory of original images'
+        help='path to source directory of original images, or int representing nr of images to generate LF on black background'
     )
     parser.add_argument(
         '-o', '--output',
