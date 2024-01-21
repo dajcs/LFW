@@ -58,7 +58,7 @@ else:
 
 
 if imgs:
-
+    # add LF to images in --source directory
     for im in imgs:
         # set im as bg_image
         bg_im = os.path.abspath(im)
@@ -66,11 +66,10 @@ if imgs:
         bpy.ops.flares_wizard.open_image(type="BG", filepath=bg_im)
         # match scene resolution to image resolution
         bpy.ops.flares_wizard.set_scene_resolution()
+
         # randomize lf origin
         utils.rand_lf_origin(args['outside_image'])
 
-        # Set output format and file path
-        # bpy.context.scene.render.image_settings.file_format = 'JPEG'  # Set output format
         # create output filename
         base_name_with_ext = os.path.basename(bg_im)  # -> e.g. img003077.jpg
         base_name = os.path.splitext(base_name_with_ext)[0] # ---> img003077
@@ -79,3 +78,23 @@ if imgs:
         bpy.context.scene.render.filepath = output_fname 
         # Render the scene, save image
         bpy.ops.render.render(write_still = True)
+
+else:
+    # generate nr_img LF effects and save them on black background
+    if not args['ref_image']:
+        bpy.context.scene.render.resolution_x = args['res_x']   # width in pixels, default 1920
+        bpy.context.scene.render.resolution_y = args['res_y']   # height in pixels, default 1080
+
+    nr_digit = len(str(nr_img - 1))
+    for i in range(nr_img):
+        # randomize lf origin
+        utils.rand_lf_origin(args['outside_image'])
+
+        # create output filename
+        fname = 'lf_' + str(i).zfill(nr_digit) + '.jpg'
+        output_fname = os.path.join(os.path.abspath(args['output']), fname)
+        # Set output path
+        bpy.context.scene.render.filepath = output_fname 
+        # Render the scene, save image
+        bpy.ops.render.render(write_still = True)
+

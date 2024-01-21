@@ -96,10 +96,9 @@ is used to add LF effects specified in my_lf_params.json to images in "images" d
     )
     parser.add_argument(
         '-oi', '--outside_image',
-        default=True,
-        type = bool,
-        help=('the LF effect origin can or can\'t be outside the image. Default True, meaning LF origin' + 
-              ' can move 20 percent beyond image boundaries (while there will be visible effects on the image)')
+        default=20,
+        type = int,
+        help=('percentage of how far can move the LF effect origin outside the image. Default 20% of the image size.')
     )
 
     args = parser.parse_args(my_args)
@@ -173,14 +172,14 @@ def save(fname='lf_params.json'):
         print(f"An error occurred:\n\n{e}\n\nTry again...")
 
 
-def rand_lf_origin(orig_outside_image):
+def rand_lf_origin(outside_image_percent):
     '''
     orig_outside_image : bool, 
     places 'Light' - therefore LF origin randomly on bg_plane
     '''
     # get bg_plane dimensions
     bg_width, bg_height, _ = bpy.data.objects['FW_BG_Plane'].dimensions
-    lf_origin = np.array([bg_width, bg_height]) * (1 + 0.2 * orig_outside_image)  # +20% if outside image allowed
+    lf_origin = np.array([bg_width, bg_height]) * (1 + outside_image_percent / 100)  # default +20% if outside image allowed
     lf_origin_middle = lf_origin / 2
     lf_origin *= np.random.rand(2)   # randomize
     lf_orig_x, lf_orig_y = lf_origin - lf_origin_middle    # shift to middle (centered in (0,0))
