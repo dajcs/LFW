@@ -98,7 +98,7 @@ is used to add LF effects specified in my_lf_params.json to images in "images" d
         '-oi', '--outside_image',
         default=20,
         type = int,
-        help=('percentage of how far can move the LF effect origin outside the image. Default 20% of the image size.')
+        help=('percentage of how far can move the LF effect origin outside the image borders. Default 20% of the image size.')
     )
 
     args = parser.parse_args(my_args)
@@ -174,7 +174,7 @@ def save(fname='lf_params.json'):
 
 def rand_lf_origin(outside_image_percent):
     '''
-    orig_outside_image : bool, 
+    orig_outside_image : int, percentage of image size 
     places 'Light' - therefore LF origin randomly on bg_plane
     '''
     # get bg_plane dimensions

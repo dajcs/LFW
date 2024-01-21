@@ -18,17 +18,10 @@ import bpy
 
 bg_plane = prepare_scene()
 
-if args['lf_params']:
-    # load and apply lf_params if specified
-    with open(args['lf_params']) as f:
-        elements =json.load(f)               # list of lf elements
+# load and apply lf_params 
+with open(args['lf_params']) as f:
+    elements =json.load(f)               # list of lf elements
     utils.apply(elements)
-else:
-    print('''
-    lf_gen.py needs --lf_params to be specified
-    more help:
-    blender --python lf_gen.py -- --help\n''')
-    sys.exit()
 
 if args['output']:
     if not os.path.exists(args['output']):  # create output directory if it doesn't exist
@@ -82,6 +75,7 @@ if imgs:
 else:
     # generate nr_img LF effects and save them on black background
     if not args['ref_image']:
+        # set render resolution if not set before
         bpy.context.scene.render.resolution_x = args['res_x']   # width in pixels, default 1920
         bpy.context.scene.render.resolution_y = args['res_y']   # height in pixels, default 1080
 
