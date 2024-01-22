@@ -6,3 +6,4 @@ lf_*.json
 !lf_params.json
 !lf_spark.json
 !lf_lunalab.json
+lf_exp.py

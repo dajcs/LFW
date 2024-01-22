@@ -119,7 +119,8 @@ def main():
 
     with open(args['lf_params']) as f:
         elements =json.load(f)               # list of lf elements
-        utils.apply(elements)
+        lf = utils.LF(elements)
+        lf.apply()                           # apply lf element props in Blender
 
     print('''\n\n\n
     Press "N", slect "Lens Flares" in the side menu

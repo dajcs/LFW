@@ -21,7 +21,8 @@ bg_plane = prepare_scene()
 # load and apply lf_params 
 with open(args['lf_params']) as f:
     elements =json.load(f)               # list of lf elements
-    utils.apply(elements)
+    lf = utils.LF(elements)
+    lf.apply()                           # apply lf element props in Blender
 
 if args['output']:
     if not os.path.exists(args['output']):  # create output directory if it doesn't exist
@@ -55,13 +56,18 @@ if imgs:
     for im in imgs:
         # set im as bg_image
         bg_im = os.path.abspath(im)
-        # add background image
+        # add as a background image
         bpy.ops.flares_wizard.open_image(type="BG", filepath=bg_im)
         # match scene resolution to image resolution
         bpy.ops.flares_wizard.set_scene_resolution()
 
         # randomize lf origin
         utils.rand_lf_origin(args['outside_image'])
+
+        # if there are ranges to be processed, create and apply new sample
+        if lf.delta:
+            lf.new_sample()
+            lf.apply_delta()
 
         # create output filename
         base_name_with_ext = os.path.basename(bg_im)  # -> e.g. img003077.jpg
@@ -83,6 +89,11 @@ else:
     for i in range(nr_img):
         # randomize lf origin
         utils.rand_lf_origin(args['outside_image'])
+
+        # if there are ranges to be processed, create and apply new sample
+        if lf.delta:
+            lf.new_sample()
+            lf.apply_delta()
 
         # create output filename
         fname = 'lf_' + str(i).zfill(nr_digit) + '.jpg'
