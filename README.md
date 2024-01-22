@@ -23,9 +23,12 @@ and this is the help message:
 usage:
 blender [-b] --python lf_[setup|gen].py -- [LFW options]
 
-LFW scripts: lf_setup.py and lf_gen.py is used to generate Lens Flare effects using Blender with Lens Flare Wizard add-on.
-It is recommended to add Blender program location to the path and start Blender via cmd line from a terminal window, as shown.
-The parameters before token "--" are interpreted by Blender's python; parameters after token "--" are used by the LFW scripts.
+LFW scripts: lf_setup.py and lf_gen.py is used to generate Lens Flare effects using Blender with
+Lens Flare Wizard add-on.
+It is recommended to add Blender program location to the path and start Blender via cmd line from
+a terminal window, as shown.
+The parameters before token "--" are interpreted by Blender's python; parameters after token "--"
+are used by the LFW scripts.
 This help message can be displayed by command:
 blender --python lf_setup.py -- --help
 
@@ -33,21 +36,29 @@ options:
   -h, --help            show this help message and exit
   -b, --background      background (headless) blender execution (parameter handled by Blender)
   -P PYTHON, --python PYTHON
-                        path to python script executed by blender (parameter handled by Blender) Use "--" to separate Blender and LFW script parameters. After "--" all the parameters will be parsed by the LFW scripts
+                        path to python script executed by blender (parameter handled by Blender)
+Use "--" to separate Blender and LFW script parameters. After "--" all the parameters will be
+parsed by the LFW scripts
   -ri REF_IMAGE, --ref_image REF_IMAGE
-                        path to image used as a background for lens flares setup or getting resolution by lf_gen
+                        path to image used as a background for lens flares setup or getting
+resolution by lf_gen
   -lf LF_PARAMS, --lf_params LF_PARAMS
                         path to json file storing lens flares settings
   -s SOURCE, --source SOURCE
-                        path to source directory of original images, or int representing nr of images to generate LF on black background
+                        path to source directory of original images, or int representing nr of
+images to generate LF on black background
   -o OUTPUT, --output OUTPUT
-                        path to output directory for images with LF, it will be created if it doesn't exist
+                        path to output directory for images with LF, it will be created if it
+doesn't exist
   -rx RES_X, --res_x RES_X
-                        resolution X (width, default 1920), of the output images, considered when no ref_image and source is a number (generating LF on black background)
+                        resolution X (width, default 1920), of the output images, considered when
+no ref_image and source is a number (generating LF on black background)
   -ry RES_Y, --res_y RES_Y
-                        resolution Y (height, default 1080) of the output images, considered when no ref_image and source is a number (generating LF on black background)
+                        resolution Y (height, default 1080) of the output images, considered when
+no ref_image and source is a number (generating LF on black background)
   -oi OUTSIDE_IMAGE, --outside_image OUTSIDE_IMAGE
-                        percentage of how far can move the LF effect origin outside the image borders. Default 20 percent of the image size.
+                        percentage of how far can move the LF effect origin outside the image
+borders. Default 20 percent of the image size.
 
 Example:
 blender --python lf_setup.py -- --ref_image LTV.png
@@ -56,7 +67,8 @@ This starts with displaying the ref_image LTV.png, on top of it a basic LF effec
 Add and/or adjust LF elements and save LF to a json file - as described in the terminal window.
 Example:
 blender --python lf_gen.py -- --lf_params my_lf_params.json --source images --output outimages
-is used to add LF effects specified in my_lf_params.json to images in "images" directory and save them to "outimages" directory.
+is used to add LF effects specified in my_lf_params.json to images in "images" directory and save
+them to "outimages" directory.
 ```
 
 `lf_setup.py` starts by loading `lf_basic.json` - if no other file is specified.  This file adds a Blank LF and a single STREAKS element.  Feel free to add further elements and adjust their properties.  Current version support a single LF, but arbitrary number of elements can be added which gives the possibility to reproduce almost any LF effect.
