@@ -4,7 +4,6 @@ Created on Tue Jan  2 11:49:39 2024
 
 @author: dajcs
 """
-
 import os
 import sys
 import json
@@ -22,11 +21,10 @@ def get_args(argv):
     # parameters before '--' are for Blender
     try:
         idx = argv.index("--")
-        my_args = argv[idx + 1:]  # Arguments after the first '--'
+        my_argv = argv[idx + 1:]  # Arguments after the first '--'
     except ValueError:
-        my_args = []
+        my_argv = []
 
-    parser = argparse.ArgumentParser()
     parser = argparse.ArgumentParser(
         description='''
 LFW scripts: lf_setup.py and lf_gen.py is used to generate Lens Flare effects using Blender with Lens Flare Wizard add-on.
@@ -98,10 +96,10 @@ is used to add LF effects specified in my_lf_params.json to images in "images" d
         '-oi', '--outside_image',
         default=20,
         type = int,
-        help=('percentage of how far can move the LF effect origin outside the image borders. Default 20% of the image size.')
+        help=('percentage of how far can move the LF effect origin outside the image borders. Default 20 percent of the image size.')
     )
 
-    args = parser.parse_args(my_args)
+    args = parser.parse_args(my_argv)
     # args, unknown = parser.parse_known_args()
     args = vars(args)  # -> type dict
     # print('unknown =', unknown, '\n')
