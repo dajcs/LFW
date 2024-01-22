@@ -53,9 +53,9 @@ is used to add LF effects specified in my_lf_params.json to images in "images" d
     )
     parser.add_argument(
         '-P', '--python', 
-        help=('path to python script executed by blender (parameter handled by Blender)\n' +
-             'Use "--" to separate Blender and LFW script parameters.\n' +
-             'After "--" all the parameters will be parsed by the LFW scripts\n')
+        help=('path to python script executed by blender (parameter handled by Blender). ' +
+             ' Use "--" to separate Blender and LFW script parameters.' +
+             'After "--" all the parameters will be parsed by the LFW scripts')
     )
 
     # '--'   Delimiter between Blender and LFW script parameters
