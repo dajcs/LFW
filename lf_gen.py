@@ -16,7 +16,7 @@ args = utils.get_args(sys.argv)
 
 import bpy
 
-bg_plane = prepare_scene()
+bg_plane = prepare_scene(args)
 
 # load and apply lf_params 
 with open(args['lf_params']) as f:

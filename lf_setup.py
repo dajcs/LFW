@@ -9,15 +9,13 @@ if '.' not in sys.path:
 
 import utils
 
-args = utils.get_args(sys.argv)
-
 
 import bpy
 # from bpy import data as D
 # from bpy import context as C
 
 
-def prepare_scene():
+def prepare_scene(args):
     # load flares wizard
     bpy.ops.flares_wizard.load_props()
 
@@ -62,11 +60,11 @@ def prepare_scene():
     bpy.ops.flares_wizard.set_scene_resolution()
 
 
-    # get 'FW_BG_Plane' location and scale, move light to (1,1,z_bg + z_cam)
+    # get 'FW_BG_Plane' location and scale, move light to (2, 2, z_bg + z_cam)
     ######################################################################
     if "FW_BG_Plane" in bpy.data.objects:
         bg_plane = bpy.data.objects['FW_BG_Plane']
-        z_bg = bg_plane.location.z   # -13.889  (but visually it appears at z=0)
+        z_bg = bg_plane.location.z   # -13.889  (appears at z=0)
         # bg_dim = D.objects['FW_BG_Plane'].dimensions  # Vector((10.001999855041504, 7.501999855041504, 0.0))
 
     if "Light" in bpy.data.objects:
@@ -89,11 +87,16 @@ def prepare_scene():
 
 
     # set world background illumination to 0
-    bpy.data.worlds["World"].node_tree.nodes["Background"].inputs[0].default_value = (0, 0, 0, 1) # color=black
-    bpy.data.worlds["World"].node_tree.nodes["Background"].inputs[1].default_value = 0 # strength
+    # set Color to Black
+    bpy.data.worlds["World"].node_tree.nodes["Background"].inputs[0].default_value = (0, 0, 0, 1)
+    # set Strength to 0
+    bpy.data.worlds["World"].node_tree.nodes["Background"].inputs[1].default_value = 0 
 
     # Set Eevee renderig Color Management \ View Transform from 'Filmic' to 'Standard'
     bpy.context.scene.view_settings.view_transform = 'Standard'
+
+    # Set output format
+    bpy.context.scene.render.image_settings.file_format = 'JPEG'
 
 
     # select 'Light' and make it active
@@ -103,27 +106,24 @@ def prepare_scene():
     obj.select_set(True)
     bpy.context.view_layer.objects.active = obj
 
-
     # Add Blank Lens Flare
     # bpy.ops.flares_wizard.presets_browser()
     bpy.ops.flares_wizard.add_lens_flare()
-
-    # Set output format
-    bpy.context.scene.render.image_settings.file_format = 'JPEG'
 
     return bg_plane
 
 
 def main():
-    prepare_scene()
+    args = utils.get_args(sys.argv)
+    prepare_scene(args)
 
     with open(args['lf_params']) as f:
-        elements =json.load(f)               # list of lf elements
-        lf = utils.LF(elements)
-        lf.apply()                           # apply lf element props in Blender
+        elements = json.load(f)       # load list of lf elements from file
+        lf = utils.LF(elements)       # create lf object based on the elements
+        lf.apply()                    # apply lf element properties in Blender
 
     print('''\n\n\n
-    Press "N", slect "Lens Flares" in the side menu
+    Press "N", select "Lens Flares" in the side menu
     Please adjust the Lens Flare effects for your project needs
 
     When finished adjustments, select Scripting workspace (top menu right)

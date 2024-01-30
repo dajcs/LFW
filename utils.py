@@ -23,11 +23,12 @@ def get_args(argv):
         idx = argv.index("--")
         my_argv = argv[idx + 1:]  # Arguments after the first '--'
     except ValueError:
+        print('\n\nWarning!!!  Couldn\'t find token "--" needed between Blender\'s arguments and current script\'s arguments.\n')
         my_argv = []
 
     parser = argparse.ArgumentParser(
         description='''
-LFW scripts: lf_setup.py and lf_gen.py is used to generate Lens Flare effects using Blender with Lens Flare Wizard add-on.
+LFW scripts: lf_setup.py and lf_gen.py is used to generate Lens Flare effects using Blender with Flares Wizard add-on.
 It is recommended to add Blender program location to the path and start Blender via cmd line from a terminal window, as shown.
 The parameters before token "--" are interpreted by Blender\'s python; parameters after token "--" are used by the LFW scripts.
 This help message can be displayed by command:
@@ -39,9 +40,14 @@ blender --python lf_setup.py -- --ref_image LTV.png
 can be used to prepare the json file containing the lens flare effects.
 This starts with displaying the ref_image LTV.png, on top of it a basic LF effect.  
 Add and/or adjust LF elements and save LF to a json file - as described in the terminal window.
+The saved json file can be further edited by replacing individual values with two-element lists, 
+and lf_gen.py will take a random sample between the new list's 2 elements.
 Example:
 blender --python lf_gen.py -- --lf_params my_lf_params.json --source images --output outimages
-is used to add LF effects specified in my_lf_params.json to images in "images" directory and save them to "outimages" directory.''',
+is used to add LF effects specified in my_lf_params.json to images in "images" directory and save them to "outimages" directory.
+Github:
+https://github.com/dajcs/LFW
+''',
         formatter_class=RawDescriptionHelpFormatter
     )
     # listing --background and --python arguments only to be displayed in the help message
@@ -84,7 +90,7 @@ is used to add LF effects specified in my_lf_params.json to images in "images" d
         '-rx', '--res_x',
         default = '1920',
         type = int,
-        help='resolution X (width, default 1920), of the output images, considered when no ref_image and source is a number (generating LF on black background)'
+        help='resolution X (width, default 1920) of the output images, considered when no ref_image and source is a number (generating LF on black background)'
     )
     parser.add_argument(
         '-ry', '--res_y',
@@ -179,7 +185,7 @@ def apply_ele_prop(i, prop, val):
             # texture_path in Windows, on Linux 'Users' -> 'home' (to be checked)
             texture_path = os.path.join( 
                 [p for p in sys.path if 'Users' in p and p.endswith('addons')][0], 
-                                                                        'FlaresWizard', 'Textures')
+                                                                    'FlaresWizard', 'Textures')
             filepath = os.path.join(texture_path, val[0])
             bpy.ops.flares_wizard.open_image(type="ELEMENT", filepath=filepath)
         print(f'bpy.context.scene.fw_group.coll[0].elements[{i}].{prop} = bpy.data.images{val}')
@@ -189,6 +195,7 @@ def apply_ele_prop(i, prop, val):
         try:
             exec(f'bpy.context.scene.fw_group.coll[0].elements[{i}].{prop} = {val}')
         except TypeError:
+            # likely an Enum property, the value should be a string
             print(f'bpy.context.scene.fw_group.coll[0].elements[{i}].{prop} = "{val}"')
             exec(f'bpy.context.scene.fw_group.coll[0].elements[{i}].{prop} = "{val}"')
     
@@ -211,11 +218,13 @@ class LF:
 
     def new_sample(self):
         '''
-        sets:
-            self.sample_elements : dict, all element properties with ranges sampled to a single value
-            self.delta_elements : dict, only element properties where a range has been sampled to single value
-        sets:
-            self.delta -> True if at least 1 range property has been sampled
+        Setting of:
+        self.sample_elements: list of dict, 
+                    element properties with ranges sampled to a single value
+                    the other properties kept intact
+        self.delta_elements : list of dict, 
+                    only element properties with ranges sampled to a single value
+        self.delta: bool, -> True if at least 1 range property has been sampled
         '''
         self.sample_elements = []
         self.delta_elements = []
@@ -232,7 +241,7 @@ class LF:
         '''
         for i, ele in enumerate(self.sample_elements):
             bpy.ops.flares_wizard.add_element(type=ele['type'])  # element type: STREAKS, GHOSTS, SHIMMER,...    
-            bpy.context.scene.fw_group.coll[0].ele_index = i
+            bpy.context.scene.fw_group.coll[0].ele_index = i     # set current element context
             print(f'\nele = {list(ele.items())[:4]}')
             for prop in ele.keys():
                 apply_ele_prop(i, prop, ele[prop])
@@ -243,7 +252,7 @@ class LF:
         '''
         for i, ele in enumerate(self.delta_elements):
             # bpy.ops.flares_wizard.add_element(type=ele['type'])  # skipping add element    
-            bpy.context.scene.fw_group.coll[0].ele_index = i
+            bpy.context.scene.fw_group.coll[0].ele_index = i       # set current element context
             # print(f'ele = {list(ele.items())[:4]}')
             for prop in ele.keys():
                 apply_ele_prop(i, prop, ele[prop])
@@ -256,8 +265,8 @@ def save(fname='lf_params.json'):
     fname : string, optional, default: 'lf_params.json'
     saves current LF elements to specified/default=lf_params json file
     '''
-    # if value like bpy.data.images['picture.png'] -> remove because can't be saved to json, keep ['picture.png']
-    js = str([ x.to_dict() for x in bpy.context.scene.fw_group.coll[0]['elements']]).replace('bpy.data.images','')
+    # value like bpy.data.images['picture.png'] -> remove because can't be saved to json, keep ['picture.png']
+    js = str([ ele.to_dict() for ele in bpy.context.scene.fw_group.coll[0]['elements']]).replace('bpy.data.images','')
     
     try:
         with open(fname, 'w') as f:
@@ -269,16 +278,16 @@ def save(fname='lf_params.json'):
 
 def rand_lf_origin(outside_image_percent):
     '''
-    orig_outside_image : int, percentage of image size 
+    orig_outside_image : int, percentage of the image size 
     places 'Light' - therefore LF origin randomly on bg_plane
     '''
     # get bg_plane dimensions
     bg_width, bg_height, _ = bpy.data.objects['FW_BG_Plane'].dimensions
-    lf_origin = np.array([bg_width, bg_height]) * (1 + outside_image_percent / 100)  # default +20% if outside image allowed
+    lf_origin = np.array([bg_width, bg_height]) * (1 + outside_image_percent / 100)  # default +20% outside image allowed
     lf_origin_middle = lf_origin / 2
     lf_origin *= np.random.rand(2)   # randomize
     lf_orig_x, lf_orig_y = lf_origin - lf_origin_middle    # shift to middle (centered in (0,0))
-    # set light x, y coords
+    # set Light x, y coords
     bpy.data.objects['Light'].location = (lf_orig_x, lf_orig_y, 0)
     
 

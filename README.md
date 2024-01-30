@@ -71,7 +71,7 @@ is used to add LF effects specified in my_lf_params.json to images in "images" d
 them to "outimages" directory.
 ```
 
-`lf_setup.py` starts by loading `lf_basic.json` - if no other file is specified.  This file adds a Blank LF and a single STREAKS element.  Feel free to add further elements and adjust their properties.  Current version support a single LF, but arbitrary number of elements can be added which gives the possibility to reproduce almost any LF effect.
+`lf_setup.py` starts by loading `lf_basic.json` - if no other file is specified.  This file adds a Blank LF and a single STREAKS element.  Feel free to add further elements and adjust their properties.  Current version supports a single LF, but arbitrary number of elements can be added which gives the possibility to reproduce almost any LF effect.
 
 When visually pleased with the effect, save json file as described in the cmd terminal:
 
@@ -123,11 +123,11 @@ This can be edited as follows:
         "scale_x": 8.0,
         "scale_y": 0.4000000059604645,
         "light_falloff": 2.630000114440918,
-        "streaks_count": [1, 5],   // replaced by a list
+        "streaks_count": [1, 5],   // number replaced by 2 element list
         "color": [
             0.06963802129030228,
             1.0,
-            [0.05, 0.5],           // replaced by a list
+            [0.05, 0.5],           // number replaced by 2 element list
             1.0
         ],
         "use_global_color": 0.7333333492279053,

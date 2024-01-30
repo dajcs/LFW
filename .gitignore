@@ -1,6 +1,7 @@
 *.blend
 __pycache__/
-output/
+output*/
+spark_lf/
 lf_*.json
 !lf_basic.json
 !lf_params.json
@@ -8,3 +9,4 @@ lf_*.json
 !lf_lunalab.json
 !lf_delta.json
 lf_exp.py
+notebook/.ipynb_checkpoints/exp_alpha-checkpoint.ipynb
