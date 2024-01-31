@@ -9,4 +9,4 @@ lf_*.json
 !lf_lunalab.json
 !lf_delta.json
 lf_exp.py
-notebook/.ipynb_checkpoints/exp_alpha-checkpoint.ipynb
+notebook/.ipynb_checkpoints/

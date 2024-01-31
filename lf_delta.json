@@ -7,7 +7,7 @@
 		"scale_x": 8.0,
 		"scale_y": 0.4000000059604645,
 		"light_falloff": 4.099999904632568,
-		"streaks_count": [1, 6],
+		"streaks_count": [1, 4],
 		"intensity": 0.550000011920929,
 		"hide": 0
 	},
@@ -19,24 +19,22 @@
 		"scale_x": 0.550000011920929,
 		"scale_y": 0.550000011920929,
 		"position": 1.25,
-		"intensity": [0.03, 0.33],
+		"intensity": [0.03, 0.22],
 		"random_scale": 0.6769102811813355,
 		"random_scale_seed": 0,
-		"ghosts_count": [1,5],
+		"ghosts_count": [1,4],
 		"image": [
 			"Poly_circle_smt0.png",
 			"Poly_circle_smt1.png",
 			"Poly_hexagon_smt1.png",
 			"Poly_octagon_smt1.png",
-			"Poly_pentagon_smt1.png",
-			"Poly_square_smt1.png",
-			"Poly_triangle_smt1.png"
+			"Poly_pentagon_smt1.png"
 		],
 		"hide": 0,
-		"ghosts_distance": [0.05, 0.25],
+		"ghosts_distance": [0.05, 0.2],
 		"ghosts_random_x": 0.0,
 		"random_rot": 0.0,
-		"ghosts_random_distance": [0.2, 0.6],
+		"ghosts_random_distance": [0.2, 0.5],
 		"ghosts_random_loc_seed": 33
 	},
 	{
@@ -54,11 +52,11 @@
 		"completion_feather": 0.03809523954987526,
 		"color": [
 			0.04434686899185181,
-			[0.0, 0.6],
+			[0.1, 0.8],
 			[0.0, 1.0],
 			1.0
 		],
-		"use_global_color": [0.0, 0.42],
+		"use_global_color": [0.0, 0.33],
 		"intensity": 1.2699999809265137
 	},
 	{
